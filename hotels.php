@@ -64,22 +64,33 @@
     </thead>
     <tbody>
     <?php
-    
     // filtro per "parking" == 1
-    $fileredHotels = [];
+    $filteredHotels = [];
 
     if (isset($_GET['parking']) && $_GET['parking'] == 1) {
         foreach ($hotels as $hotel) {
             if ($hotel['parking']) {
-                $fileredHotels[] = $hotel;
+                $filteredHotels[] = $hotel;
             }
         }
     } else {
-        $fileredHotels = $hotels;
+        $filteredHotels = $hotels;
+    }
+
+    // filtro per "vote" 
+    if (isset($_GET['vote'])) {
+        $minVote = intval($_GET['vote']);
+        $starHotels = [];
+        foreach ($filteredHotels as $hotel) {
+            if ($hotel['vote'] >= $minVote) {
+                $starHotels[] = $hotel;
+            }
+        }
+        $filteredHotels = $starHotels;
     }
 
     // stampare hotel in pagina
-    foreach ($fileredHotels as $hotel) {
+    foreach ($filteredHotels as $hotel) {
         echo "<tr>";
         echo "<td>" . $hotel['name'] . "</td>";
         echo "<td>" . $hotel['description'] . "</td>";
@@ -88,8 +99,7 @@
         echo "<td>" . $hotel['distance_to_center'] . "</td>";
         echo "</tr>";
     }
-    
-    ?>
+?>
     </tbody>
 </table>
 </body>
