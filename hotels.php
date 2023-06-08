@@ -63,17 +63,33 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-            foreach ($hotels as $hotel) {
-                echo "<tr>";
-                echo "<td>" . $hotel['name'] . "</td>";
-                echo "<td>" . $hotel['description'] . "</td>";
-                echo "<td>" . ($hotel['parking'] ? 'Sì' : 'No') . "</td>";
-                echo "<td>" . $hotel['vote'] . "</td>";
-                echo "<td>" . $hotel['distance_to_center'] . "</td>";
-                echo "</tr>";
+    <?php
+    
+    // filtro per "parking" == 1
+    $fileredHotels = [];
+
+    if (isset($_GET['parking']) && $_GET['parking'] == 1) {
+        foreach ($hotels as $hotel) {
+            if ($hotel['parking']) {
+                $fileredHotels[] = $hotel;
             }
-        ?>
+        }
+    } else {
+        $fileredHotels = $hotels;
+    }
+
+    // stampare hotel in pagina
+    foreach ($fileredHotels as $hotel) {
+        echo "<tr>";
+        echo "<td>" . $hotel['name'] . "</td>";
+        echo "<td>" . $hotel['description'] . "</td>";
+        echo "<td>" . ($hotel['parking'] ? 'Sì' : 'No') . "</td>";
+        echo "<td>" . $hotel['vote'] . "</td>";
+        echo "<td>" . $hotel['distance_to_center'] . "</td>";
+        echo "</tr>";
+    }
+    
+    ?>
     </tbody>
 </table>
 </body>
